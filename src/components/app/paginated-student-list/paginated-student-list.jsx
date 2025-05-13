@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { StudentList } from "./student-list/student-list";
 import { Pagination } from "./pagination/pagination";
+import { API_URL, API_TOKEN } from "../../../constants/constants.js";
 
 export function PaginatedStudentList() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -12,7 +13,21 @@ export function PaginatedStudentList() {
     setCurrentPage(pageNumber);
   }
 
-  // Up to you to use useEffect properly here
+  useEffect(() => {
+    fetch(
+      `${API_URL}/students?pagination[pageSize]=10&pagination[page]=${currentPage}`,
+      {
+        headers: {
+          Authorization: `Bearer ${API_TOKEN}`,
+        },
+      }
+    )
+      .then((data) => data.json())
+      .then((jsonData) => {
+        console.log(jsonData);
+        setStudents(jsonData.data);
+      });
+  }, [currentPage]);
 
   return (
     <>
