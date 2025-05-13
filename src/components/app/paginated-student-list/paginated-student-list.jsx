@@ -6,8 +6,7 @@ import { API_URL, API_TOKEN } from "../../../constants/constants.js";
 export function PaginatedStudentList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [students, setStudents] = useState([]);
-
-  const pageCount = 86;
+  const [pageCount, setPageCount] = useState([1]);
 
   function handlePageChanged(pageNumber) {
     setCurrentPage(pageNumber);
@@ -26,6 +25,7 @@ export function PaginatedStudentList() {
       .then((jsonData) => {
         console.log(jsonData);
         setStudents(jsonData.data);
+        setPageCount(jsonData.meta.pagination.pageCount);
       });
   }, [currentPage]);
 
